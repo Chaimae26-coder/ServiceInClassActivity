@@ -6,13 +6,23 @@ import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @Suppress("ControlFlowWithEmptyBody")
+
+object TimerInfo {
+    private val _currentTime = MutableStateFlow(0)
+    val currentTime = _currentTime.asStateFlow()
+
+    fun postNewTime(currentTime: Int) {
+        _currentTime.value = currentTime
+    }
+}
+
 class TimerService : Service() {
 
     private var isRunning = false
-
-    private var timerHandler : Handler? = null
 
     lateinit var t: TimerThread
 
@@ -25,13 +35,13 @@ class TimerService : Service() {
             get() = this@TimerService.isRunning
 
         // Check if Timer is paused
-        val paused: Boolean
+        val isPaused: Boolean
             get() = this@TimerService.paused
 
         // Start a new timer
         fun start(startValue: Int){
 
-            if (!paused) {
+            if (!isPaused) {
                 if (!isRunning) {
                     if (::t.isInitialized) t.interrupt()
                     this@TimerService.start(startValue)
@@ -41,10 +51,6 @@ class TimerService : Service() {
             }
         }
 
-        // Receive updates from Service
-        fun setHandler(handler: Handler) {
-            timerHandler = handler
-        }
 
         // Stop a currently running timer
         fun stop() {
@@ -90,7 +96,7 @@ class TimerService : Service() {
                 for (i in startValue downTo 1)  {
                     Log.d("Countdown", i.toString())
 
-                    timerHandler?.sendEmptyMessage(i)
+                    TimerInfo.postNewTime(i)
 
                     while (paused);
                     sleep(1000)
