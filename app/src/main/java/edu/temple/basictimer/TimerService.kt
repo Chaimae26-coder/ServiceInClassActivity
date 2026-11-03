@@ -1,15 +1,12 @@
-package edu.temple.myapplication
+package edu.temple.basictimer
 
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
-import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
-@Suppress("ControlFlowWithEmptyBody")
 
 object TimerInfo {
     private val _currentTime = MutableStateFlow(0)

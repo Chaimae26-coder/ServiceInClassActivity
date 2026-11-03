@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace 'edu.temple.myapplication'
+    namespace 'edu.temple.basictimer'
     compileSdk 37
 
     defaultConfig {
-        applicationId "edu.temple.myapplication"
+        applicationId "edu.temple.basictimer"
         minSdk 30
-        targetSdk 34
+        targetSdk 37
         versionCode 1
         versionName "1.0"
 

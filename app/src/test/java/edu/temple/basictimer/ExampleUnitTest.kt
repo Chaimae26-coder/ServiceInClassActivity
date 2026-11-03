@@ -1,4 +1,4 @@
-package edu.temple.myapplication
+package edu.temple.basictimer
 
 import org.junit.Test
 
